@@ -1,0 +1,20 @@
+FROM mcr.microsoft.com/mssql/server:2022-latest
+
+USER root
+
+# Create directories and set permissions
+RUN mkdir -p /var/opt/sqlserver
+RUN chown -R mssql:root /var/opt/sqlserver
+
+# Expose SQL Server port
+EXPOSE 1433
+
+# Copy SQL scripts and entrypoint script
+COPY docker-setup.sql /
+COPY docker-entrypoint.sh /
+
+# Grant execute permissions to entrypoint script
+RUN chmod +x /docker-entrypoint.sh
+
+# Set the entrypoint for the container
+ENTRYPOINT ["/docker-entrypoint.sh"]

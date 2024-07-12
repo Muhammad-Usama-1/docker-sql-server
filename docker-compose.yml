@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  sql_server_db:
+    build:
+      context: .
+      dockerfile: Dockerfile.mssql
+    container_name: ${UMBRACO_DATABASE_SERVER_AND_CONTAINER_NAME}
+    ports:
+      - "1433:1433"
+    environment:
+      MSSQL_BACKUP_DIR: "/var/opt/mssql"
+      MSSQL_DATA_DIR: "/var/opt/data"
+      MSSQL_LOG_DIR: "/var/opt/log"
+      SA_PASSWORD: ${SA_PASSWORD} # Set your SQL Server SA password
+      ACCEPT_EULA: "Y"
+      DB_NAME: ${DB_NAME} # Example database name
+      DB_USER_LOGIN: ${DB_USER_LOGIN} # Example database user login
+      DB_USER_PASSWORD: ${DB_USER_PASSWORD} # Example user password
+    volumes:
+      - umbraco_mssql_data:/var/opt/sqlserver
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P  ${SA_PASSWORD} -Q 'SELECT 1'",
+        ]
+      interval: 15s
+      timeout: 30s
+      retries: 5
+volumes:
+  umbraco_mssql_data:
+    external: false
