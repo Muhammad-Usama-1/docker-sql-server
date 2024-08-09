@@ -7,7 +7,7 @@ initialize_app_database() {
   echo "Waiting for SQL Server to start..."
   sleep 30s
 
-   /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i /docker-setup.sql \
+   /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P $SA_PASSWORD -d master -i /docker-setup.sql \
     -v DB_NAME="$DB_NAME" \
     -v DB_USER_LOGIN="$DB_USER_LOGIN" \
     -v DB_USER_PASSWORD="$DB_USER_PASSWORD"
