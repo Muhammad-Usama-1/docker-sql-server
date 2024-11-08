@@ -8,3 +8,4 @@ fi
 
 
 echo $SA_PASSWORD
+echo hello
