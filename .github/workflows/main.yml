@@ -22,5 +22,7 @@ jobs:
          filters: |
           src:
             - 'src/**'
-            - 'folder/**'
+            - 'folder2/**'
+      - if: steps.changes.outputs.src == 'true'
+        run: echo "changed in src or folder "    
     
